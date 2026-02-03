@@ -37,7 +37,7 @@ export function SkillsSection() {
   ]
 
   return (
-    <section style={{
+    <section id="skills" style={{
       position: 'relative',
       padding: '6rem 1.5rem',
       background: theme.background.lightGradient,

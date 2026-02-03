@@ -1,109 +1,226 @@
 ﻿'use client'
 
+import { motion } from 'framer-motion'
+import { Menu, X, Moon, Sun } from 'lucide-react'
 import { useState, useEffect } from 'react'
-import { useTheme } from 'next-themes'
-import { Moon, Sun, Menu, X } from 'lucide-react'
+import { AnimatedLogo } from '@/components/ui/animated-logo'
 
 export function Navbar() {
-  const [mounted, setMounted] = useState(false)
-  const [isOpen, setIsOpen] = useState(false)
-  const { theme, setTheme } = useTheme()
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isDark, setIsDark] = useState(true)
 
-  useEffect(() => setMounted(true), [])
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const toggleTheme = () => {
+    setIsDark(!isDark)
+    document.documentElement.classList.toggle('dark')
+  }
 
   const navItems = [
-    { name: 'Início', href: '#home' },
+    { name: 'Início', href: '#' },
     { name: 'Sobre', href: '#about' },
     { name: 'Habilidades', href: '#skills' },
     { name: 'Projetos', href: '#projects' },
-    { name: 'Contato', href: '#contact' },
+    { name: 'Contato', href: '#contact' }
   ]
 
   const scrollToSection = (href: string) => {
-    const element = document.querySelector(href)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
-      setIsOpen(false)
+    if (href === '#') {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    } else {
+      const element = document.querySelector(href)
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }
     }
+    setIsMobileMenuOpen(false)
   }
 
   return (
-    <nav className="fixed top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <a 
-          href="#home" 
-          onClick={(e) => { e.preventDefault(); scrollToSection('#home'); }}
-          className="text-2xl font-bold"
-        >
-          <span className="text-[--color-primary-600]">{'<'}</span>
-          VH
-          <span className="text-[--color-primary-600]">{'/>'}</span>
-        </a>
+    <motion.nav
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ duration: 0.5 }}
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 1000,
+        background: isScrolled 
+          ? 'rgba(0, 0, 0, 0.8)' 
+          : 'transparent',
+        backdropFilter: isScrolled ? 'blur(10px)' : 'none',
+        borderBottom: isScrolled ? '1px solid rgba(255, 255, 255, 0.1)' : 'none',
+        transition: 'all 0.3s ease'
+      }}
+    >
+      <div style={{
+        maxWidth: '1400px',
+        margin: '0 auto',
+        padding: '1.5rem 1.5rem', // Aumentado de 1rem para 1.5rem
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+      }}>
+        {/* Logo Animada - MAIOR */}
+        <AnimatedLogo onClick={() => scrollToSection('#')} />
 
-        {/* Desktop Navigation */}
-        <div className="hidden items-center gap-6 md:flex">
-          {navItems.map((item) => (
-            <a
-              key={item.name}
-              href={item.href}
-              onClick={(e) => { e.preventDefault(); scrollToSection(item.href); }}
-              className="text-sm font-medium transition-colors hover:text-[--color-primary-600]"
-            >
-              {item.name}
-            </a>
-          ))}
-          
-          {mounted && (
-            <button
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-800"
-              aria-label="Toggle theme"
-            >
-              {theme === 'dark' ? (
-                <Sun className="h-5 w-5" />
-              ) : (
-                <Moon className="h-5 w-5" />
-              )}
-            </button>
-          )}
-        </div>
-
-        {/* Mobile Menu Button */}
-        <button
-          className="md:hidden"
-          onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle menu"
-        >
-          {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
-      </div>
-
-      {/* Mobile Navigation */}
-      {isOpen && (
-        <div className="border-t md:hidden">
-          <div className="container mx-auto px-4 py-4 space-y-2">
-            {navItems.map((item) => (
-              <a
+        {/* Desktop Menu */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '2rem'
+        }}>
+          {/* Nav Items - Desktop */}
+          <div style={{
+            display: 'none',
+            gap: '2rem',
+            alignItems: 'center'
+          }}
+          className="desktop-menu"
+          >
+            {navItems.map((item, index) => (
+              <motion.a
                 key={item.name}
                 href={item.href}
-                onClick={(e) => { e.preventDefault(); scrollToSection(item.href); }}
-                className="block py-2 text-sm font-medium hover:text-[--color-primary-600]"
+                onClick={(e) => {
+                  e.preventDefault()
+                  scrollToSection(item.href)
+                }}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ y: -2 }}
+                style={{
+                  color: '#d1d5db',
+                  textDecoration: 'none',
+                  fontSize: '0.875rem',
+                  fontWeight: '500',
+                  transition: 'color 0.2s',
+                  cursor: 'pointer'
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.color = '#ffffff'}
+                onMouseLeave={(e) => e.currentTarget.style.color = '#d1d5db'}
               >
                 {item.name}
-              </a>
+              </motion.a>
             ))}
-            {mounted && (
-              <button
-                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                className="flex items-center gap-2 py-2 text-sm font-medium"
-              >
-                {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-                {theme === 'dark' ? 'Modo Claro' : 'Modo Escuro'}
-              </button>
-            )}
           </div>
+
+          {/* Theme Toggle */}
+          <motion.button
+            onClick={toggleTheme}
+            whileHover={{ scale: 1.1, rotate: 180 }}
+            whileTap={{ scale: 0.9 }}
+            style={{
+              padding: '0.5rem',
+              background: 'rgba(255, 255, 255, 0.1)',
+              border: 'none',
+              borderRadius: '0.5rem',
+              color: '#ffffff',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.3s'
+            }}
+            aria-label="Alternar tema"
+          >
+            {isDark ? (
+              <Sun style={{ width: '1.25rem', height: '1.25rem' }} />
+            ) : (
+              <Moon style={{ width: '1.25rem', height: '1.25rem' }} />
+            )}
+          </motion.button>
+
+          {/* Mobile Menu Button */}
+          <motion.button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            whileTap={{ scale: 0.9 }}
+            style={{
+              display: 'none',
+              padding: '0.5rem',
+              background: 'rgba(255, 255, 255, 0.1)',
+              border: 'none',
+              borderRadius: '0.5rem',
+              color: '#ffffff',
+              cursor: 'pointer'
+            }}
+            className="mobile-menu-btn"
+            aria-label="Menu"
+          >
+            {isMobileMenuOpen ? (
+              <X style={{ width: '1.5rem', height: '1.5rem' }} />
+            ) : (
+              <Menu style={{ width: '1.5rem', height: '1.5rem' }} />
+            )}
+          </motion.button>
         </div>
+      </div>
+
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: 'auto' }}
+          exit={{ opacity: 0, height: 0 }}
+          style={{
+            background: 'rgba(0, 0, 0, 0.95)',
+            borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+            padding: '1rem'
+          }}
+        >
+          {navItems.map((item) => (
+            <motion.a
+              key={item.name}
+              href={item.href}
+              onClick={(e) => {
+                e.preventDefault()
+                scrollToSection(item.href)
+              }}
+              whileHover={{ x: 10 }}
+              style={{
+                display: 'block',
+                padding: '1rem',
+                color: '#d1d5db',
+                textDecoration: 'none',
+                fontSize: '1rem',
+                fontWeight: '500',
+                transition: 'color 0.2s',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.color = '#ffffff'}
+              onMouseLeave={(e) => e.currentTarget.style.color = '#d1d5db'}
+            >
+              {item.name}
+            </motion.a>
+          ))}
+        </motion.div>
       )}
-    </nav>
+
+      <style jsx global>{`
+        @media (min-width: 768px) {
+          .desktop-menu {
+            display: flex !important;
+          }
+          .mobile-menu-btn {
+            display: none !important;
+          }
+        }
+        @media (max-width: 767px) {
+          .mobile-menu-btn {
+            display: flex !important;
+          }
+        }
+      `}</style>
+    </motion.nav>
   )
 }

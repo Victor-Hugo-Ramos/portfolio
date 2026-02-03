@@ -1,9 +1,33 @@
-'use client'
+﻿'use client'  // ← ADICIONE ESTA LINHA
 
 import { motion } from 'framer-motion'
+import { useEffect, useState } from 'react'
 
 export function ParticlesBackground() {
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
   const particles = Array.from({ length: 50 })
+
+  useEffect(() => {
+    // Define as dimensões apenas no cliente
+    setDimensions({
+      width: window.innerWidth,
+      height: window.innerHeight
+    })
+
+    // Atualiza ao redimensionar
+    const handleResize = () => {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight
+      })
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
+  // Não renderiza até ter as dimensões
+  if (dimensions.width === 0) return null
 
   return (
     <div style={{
@@ -16,12 +40,12 @@ export function ParticlesBackground() {
         <motion.div
           key={i}
           initial={{
-            x: Math.random() * window.innerWidth,
-            y: Math.random() * window.innerHeight,
+            x: Math.random() * dimensions.width,
+            y: Math.random() * dimensions.height,
             opacity: 0
           }}
           animate={{
-            y: [null, Math.random() * window.innerHeight],
+            y: [null, Math.random() * dimensions.height],
             opacity: [0, 1, 0]
           }}
           transition={{
