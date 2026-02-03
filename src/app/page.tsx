@@ -1,14 +1,17 @@
-import { Navbar } from "@/components/layout/navbar";
+﻿import { Navbar } from "@/components/layout/navbar";
 import { HeroSection } from "@/components/sections/hero-section";
 import { AboutSection } from "@/components/sections/about-section";
 import { SkillsSection } from "@/components/sections/skills-section";
 import { ProjectsSection } from "@/components/sections/projects-section";
 import { ContactSection } from "@/components/sections/contact-section";
 import { Footer } from "@/components/layout/footer";
+import { WhatsAppButton } from "@/components/ui/whatsapp-button";
+import { CustomCursor } from "@/components/ui/custom-cursor"; // ✅ Novo
 
 export default function Home() {
   return (
     <div className="min-h-screen">
+      <CustomCursor /> {/* ✅ Cursor personalizado */}
       <Navbar />
       <main>
         <HeroSection />
@@ -18,6 +21,7 @@ export default function Home() {
         <ContactSection />
       </main>
       <Footer />
+      <WhatsAppButton />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect } from 'react'
 import { useTheme } from 'next-themes'
@@ -12,7 +12,7 @@ export function Navbar() {
   useEffect(() => setMounted(true), [])
 
   const navItems = [
-    { name: 'In�cio', href: '#home' },
+    { name: 'Início', href: '#home' },
     { name: 'Sobre', href: '#about' },
     { name: 'Habilidades', href: '#skills' },
     { name: 'Projetos', href: '#projects' },

@@ -1,127 +1,291 @@
-'use client'
+ï»¿'use client'
 
 import { motion } from 'framer-motion'
-import { Github, Linkedin, Mail, ArrowDown } from 'lucide-react'
+import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react'
+import { TypingText } from '@/components/ui/typing-text'
+import { ParticlesBackground } from '@/components/ui/particles-background'
 
 export function HeroSection() {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3
+      }
+    }
+  }
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.5 }
+    }
+  }
+
+  const socials = [
+    { icon: Github, href: 'https://github.com/vhugo1234', label: 'GitHub' },
+    { icon: Linkedin, href: 'https://linkedin.com/in/victor-hugo-ramos-7275949a', label: 'LinkedIn' },
+    { icon: Mail, href: '#contact', label: 'Email' }
+  ]
+
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center px-4 py-20 pt-24">
-      <div className="container mx-auto">
-        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12 items-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+    <section style={{
+      position: 'relative',
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: 'linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%)',
+      overflow: 'hidden'
+    }}>
+      <ParticlesBackground />
+
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        style={{
+          position: 'relative',
+          zIndex: 1,
+          textAlign: 'center',
+          padding: '2rem',
+          maxWidth: '900px'
+        }}
+      >
+        {/* Badge */}
+        <motion.div variants={itemVariants}>
+          <motion.span
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: 'spring', stiffness: 200, delay: 0.5 }}
+            style={{
+              display: 'inline-block',
+              padding: '0.5rem 1.5rem',
+              background: 'rgba(59, 130, 246, 0.1)',
+              border: '1px solid rgba(59, 130, 246, 0.3)',
+              borderRadius: '9999px',
+              color: '#60a5fa',
+              fontSize: '0.875rem',
+              fontWeight: '500',
+              marginBottom: '2rem'
+            }}
           >
-            <motion.h1 
-              className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              Olá, eu sou{' '}
-              <span className="text-[--color-primary-600]">
-                Victor Hugo
-              </span>
-            </motion.h1>
-            
-            <motion.p 
-              className="mt-6 text-xl text-gray-600 dark:text-gray-300 md:text-2xl"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
-              Desenvolvedor Full Stack
-            </motion.p>
-            
-            <motion.p 
-              className="mt-4 text-lg text-gray-500 dark:text-gray-400 max-w-2xl"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              Apaixonado por criar experiências digitais incríveis e soluções
-              inovadoras. Especializado em React, Next.js e tecnologias modernas
-              da web.
-            </motion.p>
+            ðŸ‘‹ Bem-vindo ao meu portfÃ³lio
+          </motion.span>
+        </motion.div>
 
-            <motion.div 
-              className="mt-8 flex flex-wrap gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-            >
-              <a
-                href="#projects"
-                onClick={(e) => {
-                  e.preventDefault()
-                  document.querySelector('#projects')?.scrollIntoView({ behavior: 'smooth' })
-                }}
-                className="inline-flex items-center gap-2 rounded-lg bg-[--color-primary-600] px-6 py-3 text-white font-medium hover:bg-[--color-primary-700] transition-colors"
-              >
-                Ver Projetos
-                <ArrowDown className="h-4 w-4" />
-              </a>
-              <a
-                href="#contact"
-                onClick={(e) => {
-                  e.preventDefault()
-                  document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' })
-                }}
-                className="inline-flex items-center gap-2 rounded-lg border-2 border-[--color-primary-600] px-6 py-3 font-medium text-[--color-primary-600] hover:bg-[--color-primary-50] dark:hover:bg-[--color-primary-950] transition-colors"
-              >
-                Entre em Contato
-              </a>
-            </motion.div>
-
-            <motion.div 
-              className="mt-8 flex gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-            >
-              <a
-                href="https://github.com/vhugo1234"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                aria-label="GitHub"
-              >
-                <Github className="h-6 w-6" />
-              </a>
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="h-6 w-6" />
-              </a>
-              <a
-                href="mailto:seu@email.com"
-                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                aria-label="Email"
-              >
-                <Mail className="h-6 w-6" />
-              </a>
-            </motion.div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="relative hidden lg:block"
+        {/* Titulo com efeito gradiente animado */}
+        <motion.h1
+          variants={itemVariants}
+          style={{
+            fontSize: 'clamp(2.5rem, 8vw, 5rem)',
+            fontWeight: '800',
+            marginBottom: '1.5rem',
+            background: 'linear-gradient(to right, #ffffff, #60a5fa, #ffffff)',
+            backgroundSize: '200% auto',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text'
+          }}
+        >
+          <motion.span
+            animate={{
+              backgroundPosition: ['0% center', '200% center', '0% center']
+            }}
+            transition={{
+              duration: 5,
+              repeat: Infinity,
+              ease: 'linear'
+            }}
+            style={{
+              display: 'inline-block',
+              background: 'linear-gradient(to right, #ffffff, #60a5fa, #ffffff)',
+              backgroundSize: '200% auto',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent'
+            }}
           >
-            <div className="aspect-square w-full max-w-lg mx-auto">
-              <div className="w-full h-full rounded-2xl bg-gradient-to-br from-[--color-primary-500] to-purple-600 flex items-center justify-center text-white text-8xl font-bold shadow-2xl">
-                VH
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </div>
+            Victor Hugo Ramos Almeida
+          </motion.span>
+        </motion.h1>
+
+        {/* Texto digitando */}
+        <motion.div
+          variants={itemVariants}
+          style={{
+            fontSize: 'clamp(1.25rem, 4vw, 2rem)',
+            color: '#9ca3af',
+            marginBottom: '2rem',
+            minHeight: '3rem'
+          }}
+        >
+          <TypingText
+            texts={[
+              'Desenvolvedor Full Stack',
+              'Criador de ExperiÃªncias Web',
+              'Apaixonado por Tecnologia',
+              'Construindo o Futuro'
+            ]}
+            speed={100}
+            delay={2000}
+          />
+        </motion.div>
+
+        {/* Descricao */}
+        <motion.p
+          variants={itemVariants}
+          style={{
+            fontSize: '1.125rem',
+            color: '#d1d5db',
+            lineHeight: '1.8',
+            marginBottom: '3rem',
+            maxWidth: '600px',
+            margin: '0 auto 3rem'
+          }}
+        >
+          Transformo ideias em cÃ³digo e cÃ³digo em soluÃ§Ãµes inovadoras que fazem a diferenÃ§a.
+        </motion.p>
+
+        {/* Botoes */}
+        <motion.div
+          variants={itemVariants}
+          style={{
+            display: 'flex',
+            gap: '1rem',
+            justifyContent: 'center',
+            flexWrap: 'wrap',
+            marginBottom: '3rem'
+          }}
+        >
+          <motion.a
+            href="#projects"
+            whileHover={{ scale: 1.05, boxShadow: '0 10px 30px rgba(59, 130, 246, 0.4)' }}
+            whileTap={{ scale: 0.95 }}
+            style={{
+              padding: '1rem 2rem',
+              background: 'linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)',
+              color: 'white',
+              borderRadius: '0.75rem',
+              fontWeight: '600',
+              textDecoration: 'none',
+              display: 'inline-block'
+            }}
+          >
+            Ver Projetos
+          </motion.a>
+
+          <motion.a
+            href="#contact"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            style={{
+              padding: '1rem 2rem',
+              background: 'transparent',
+              color: 'white',
+              border: '2px solid rgba(255, 255, 255, 0.2)',
+              borderRadius: '0.75rem',
+              fontWeight: '600',
+              textDecoration: 'none',
+              display: 'inline-block'
+            }}
+          >
+            Entre em Contato
+          </motion.a>
+        </motion.div>
+
+        {/* Social Links */}
+        <motion.div
+          variants={itemVariants}
+          style={{
+            display: 'flex',
+            gap: '1rem',
+            justifyContent: 'center',
+            marginBottom: '4rem'
+          }}
+        >
+          {socials.map((social, index) => (
+            <motion.a
+              key={social.label}
+              href={social.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ y: -5, scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 + index * 0.1 }}
+              style={{
+                padding: '0.75rem',
+                background: 'rgba(255, 255, 255, 0.05)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '0.75rem',
+                color: 'white',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.3s'
+              }}
+              aria-label={social.label}
+            >
+              <social.icon style={{ width: '1.25rem', height: '1.25rem' }} />
+            </motion.a>
+          ))}
+        </motion.div>
+
+        {/* Scroll Indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5 }}
+        >
+          <motion.a
+            href="#about"
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            style={{
+              display: 'inline-flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '0.5rem',
+              color: '#9ca3af',
+              textDecoration: 'none',
+              fontSize: '0.875rem'
+            }}
+          >
+            <span>Role para baixo</span>
+            <ArrowDown style={{ width: '1.25rem', height: '1.25rem' }} />
+          </motion.a>
+        </motion.div>
+      </motion.div>
+
+      {/* Efeito de brilho no fundo */}
+      <motion.div
+        animate={{
+          scale: [1, 1.2, 1],
+          opacity: [0.3, 0.5, 0.3]
+        }}
+        transition={{
+          duration: 8,
+          repeat: Infinity,
+          ease: 'easeInOut'
+        }}
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: '800px',
+          height: '800px',
+          background: 'radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%)',
+          borderRadius: '50%',
+          filter: 'blur(60px)',
+          pointerEvents: 'none'
+        }}
+      />
     </section>
   )
 }

@@ -40,4 +40,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-echo ".vs/"
+# Visual Studio
+.vs/
+.vscode/
+*.suo
+*.user

@@ -1,4 +1,4 @@
-import { Github, Linkedin, Mail, Heart } from 'lucide-react'
+﻿import { Github, Linkedin, Mail, Heart } from 'lucide-react'
 
 export function Footer() {
   return (
@@ -6,7 +6,7 @@ export function Footer() {
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            � {new Date().getFullYear()} Victor Hugo. Feito com{' '}
+            © {new Date().getFullYear()} Victor Hugo. Feito com{' '}
             <Heart className="inline h-4 w-4 text-red-500" /> usando Next.js
           </p>
 
